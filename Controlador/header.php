@@ -1,0 +1,67 @@
+<?php 
+require_once("Controlador/config.php"); 
+require_once("Controlador/clases/botones.php"); 
+require_once("Controlador/clases/usuario.php"); 
+require_once("Controlador/clases/video.php");
+require_once("Controlador/clases/MostrarVideo.php");
+require_once("Controlador/clases/itemvideo.php");
+require_once("Controlador/clases/sqlSuscrip.php");
+require_once("Controlador/clases/menuNav.php");
+
+$usernameLoggedIn = usuario::isLoggedIn() ? $_SESSION["userLoggedIn"] : "";
+$userLoggedInObj = new usuario($con, $usernameLoggedIn);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UCVTube</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="assets/js/accionescomunes.js"></script>
+<script src="assets/js/accionesUsu.js"></script>
+</head>
+<body>
+
+<div id="pageContainer">
+  <div id="mastHeadContainer">
+    <button class="navShowHide">
+      <img src="assets/img/icons/menu.png">
+    </button>
+    <a class="logoContainer" href="index.php">
+      <img src="assets/img/icons/UCVTubeLogo.png" title="Logo" alt="Site logo">
+    </a>
+
+    <div class="searchBarContainer">
+      <form action="search.php" method="GET">
+        <input type="text" class="searchBar" name="term" placeholder="Buscar">
+        <button class="searchButton">
+        <img src="assets/img/icons/search.png">
+        </button>
+      </form>
+    </div>
+    <div class="rightIcons">
+      <a href="Subir.php">
+        <img class="upload" src="assets/img/icons/upload.png">
+      </a>
+      <?php 
+        echo botones::createUserProfileNavigationButton($con, $userLoggedInObj->getUsername());
+      ?>
+    </div>
+
+  </div>
+  <div id="sideNavContainer" style="display:none;">
+    <?php 
+    $navigationProvider = new menuNav($con, $userLoggedInObj);
+
+    echo $navigationProvider->create();
+    ?>
+  </div>
+  <div id="mainSectionContainer">
+    <div id="mainContentContainer">
+    
